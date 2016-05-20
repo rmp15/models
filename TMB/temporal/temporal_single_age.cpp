@@ -31,7 +31,7 @@ PARAMETER(beta_0);		// global slope
 PARAMETER(log_sigma_rw);      	// log(rw variance) 
 PARAMETER(log_sigma_epsilon);   // log(obs variance)
 
-PARAMETER(log_est_rate);	// estimated rate
+PARAMETER(log_mu_pred);		// estimated rate
 
 // initialise negative log-likelihood
 Type nll = Type(0.0);
