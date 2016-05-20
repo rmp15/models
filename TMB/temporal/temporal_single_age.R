@@ -5,10 +5,8 @@ library(TMB)
 
 # create a dataset from specified model
 
-# series length
+# series length (t) and number of different series (n)
 t <- 100
-
-# number of different series
 n <- 1
 
 # coefficients
@@ -17,9 +15,7 @@ beta_0 <- 0.01
 
 # generate random walk
 generate.rw1 <- function(log_sigma_rw) {
-
 dummy <-c(0,cumsum(rnorm(n=t-1, mean=0,sd=exp(log_sigma_rw))))
-
 return(dummy)
 }
 
