@@ -7,7 +7,7 @@ library(TMB)
 
 # series length (t) and number of different series (n)
 t <- 100
-n <- 1
+n <- 2
 
 # coefficients
 alpha_0 <- 1
@@ -35,5 +35,5 @@ dat <- data.frame(x=x,mu=y,log_mu=log(y))
 fit <- glm(mu~x, family= poisson, data=dat)
 
 # create matrix with data
-
+log_mu <- matrix(dat$log_mu,t,n)
 
