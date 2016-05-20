@@ -7,11 +7,11 @@ library(TMB)
 
 # series length (t) and number of different series (n)
 t <- 100
-n <- 2
+n <- 1
 
 # coefficients
 alpha_0 <- 1
-beta_0 <- 0.01
+beta_0 <- 0.00005
 
 # generate random walk
 generate.rw1 <- function(log_sigma_rw) {
@@ -19,7 +19,7 @@ dummy <-c(0,cumsum(rnorm(n=t-1, mean=0,sd=exp(log_sigma_rw))))
 return(dummy)
 }
 
-rw1 <- rep(generate.rw1(0),n) 
+rw1 <- replicate(n,generate.rw1(0)) 
 
 # generate covariate values
 x <- rep(seq(1:t),n)
