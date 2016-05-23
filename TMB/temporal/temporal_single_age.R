@@ -10,8 +10,8 @@ T <- 10000
 N <- 1
 
 # coefficients
-alpha_0 <- 10
-beta_0 <- 0.1
+alpha_0 <- 1
+beta_0 <- 0.2
 
 # generate random walk
 generate.rw1 <- function(log_sigma_rw) {
