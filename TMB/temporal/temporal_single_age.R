@@ -25,14 +25,14 @@ rw1 <- replicate(N,generate.rw1(0))
 t <- rep(seq(1:T),N)
 
 # compute mu values
-real_mu <- exp(alpha_0 + beta_0 * t + rw1)
+real_mu <- exp(alpha_0 + beta_0 * t ) + rw1
 
 y <- rpois(n=T*N, lambda=real_mu)
 
 dat <- data.frame(t=t,mu=y)
 
 # fit using glm
-# glm.fit <- glm(dat$mu ~ 1+t, family='poisson')
+# glm.fit <- glm(dat$mu ~ 1+t, family='poisson'(link = "log"))
 
 # fit using INLA
 t2 <- t
