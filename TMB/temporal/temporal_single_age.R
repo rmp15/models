@@ -16,8 +16,8 @@ alpha_0 <- 1
 beta_0 <- -0.02
 
 # generate random walk
-generate.rw1 <- function(log_sigma_rw) {
-dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=exp(log_sigma_rw))))
+generate.rw1 <- function(prec_rw1) {
+dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec_rw1)))))
 return(dummy)
 }
 
