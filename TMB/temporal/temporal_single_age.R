@@ -21,7 +21,7 @@ dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=exp(log_sigma_rw))))
 return(dummy)
 }
 
-rw1 <- replicate(N,generate.rw1(-2)) 
+rw1 <- replicate(N,generate.rw1(-3)) 
 
 # generate covariate values
 t <- rep(seq(1:T),N)
