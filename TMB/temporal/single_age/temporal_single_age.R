@@ -34,7 +34,7 @@ counts <- rpois(n=T*N, lambda=real_lambda)
 dat <- data.frame(t=t,counts=counts)
 
 # fit using glm
-# glm.fit <- glm(dat$y ~ 1+t, family='poisson'(link = "log"))
+# glm.fit <- glm(dat$counts ~ 1+t, family='poisson'(link = "log"))
 
 # fit using INLA
 t2 <- t
@@ -50,11 +50,13 @@ dyn.load(dynlib('temporal_single_age'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(alpha_0=10,beta_0=1,log_tau_rw=0,log_tau_epsilon=0,log_counts_pred=matrix(0,N,T))
+parameters <- list(alpha_0=10,beta_0=-0.02,log_tau_rw=-1,log_tau_epsilon=-1,log_counts_pred=matrix(0,N,T))
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, DLL='temporal_single_age')
-obj$hessian <- FALSE
+obj$hessian <- TRUE
 opt <- do.call("optim", obj)
 sd <- sdreport(obj)
 
+# extract fixed effects
+fixed <- summary(sd, 'fixed')
