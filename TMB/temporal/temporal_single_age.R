@@ -1,5 +1,7 @@
 rm(list=ls())
 
+set.seed(123)
+
 library(INLA)
 library(TMB)
 
