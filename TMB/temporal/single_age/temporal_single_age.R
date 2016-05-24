@@ -43,5 +43,5 @@ fml <- mu ~ 1 + t + f(t2,model='rw1')
 inla.fit <- inla(fml,family='poisson',data=dat)
 
 # create matrix with data
-log_mu <- matrix(dat$log_mu,t,n)
+log_mu <- matrix(dat$log_mu,T,N)
 
