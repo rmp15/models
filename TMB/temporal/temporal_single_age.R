@@ -10,7 +10,7 @@ T <- 10000
 N <- 1
 
 # coefficients
-alpha_0 <- 1
+alpha_0 <- 0.1
 beta_0 <- -0.02
 
 # generate random walk
@@ -19,13 +19,13 @@ dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=exp(log_sigma_rw))))
 return(dummy)
 }
 
-rw1 <- replicate(N,generate.rw1(0)) 
+rw1 <- replicate(N,generate.rw1(-1)) 
 
 # generate covariate values
 t <- rep(seq(1:T),N)
 
 # compute mu values
-real_mu <- exp(alpha_0 + beta_0 * t ) + rw1
+real_mu <- exp(alpha_0 + beta_0 * t  + rw1)
 
 y <- rpois(n=T*N, lambda=real_mu)
 
