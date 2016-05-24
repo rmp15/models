@@ -50,7 +50,7 @@ dyn.load(dynlib('temporal_single_age'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(alpha_0=0,beta_0=-0,log_tau_rw=1,log_tau_epsilon=1,log_counts_pred=matrix(1,N,T))
+parameters <- list(alpha_0=1,beta_0=1,log_tau_rw=1,log_tau_epsilon=1,log_counts_pred=matrix(1,N,T))
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, DLL='temporal_single_age')
