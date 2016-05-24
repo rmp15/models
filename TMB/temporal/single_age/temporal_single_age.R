@@ -1,7 +1,5 @@
 rm(list=ls())
 
-set.seed(123)
-
 library(INLA)
 library(TMB)
 
@@ -18,6 +16,7 @@ prec_rw1 <- 150000
 
 # generate random walk
 generate.rw1 <- function(prec) {
+set.seed(123)
 dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec)))))
 return(dummy)
 }
