@@ -12,26 +12,30 @@ Type objective_function<Type>::operator() ()
 //			(beta_0 + beta_m + beta_s + beta_ms)*t
 //			(pi_t)s + epsilon_st
   
-// data
+// DATA
 DATA_MATRIX(log_counts);        // matrix of log of counts for single age group in multiple states, 
 				// with time across and states downwards
 size_t T= log_mu.cols();	// number of time points
 size_t N = log_mu.rows();	// number of states
   
-// parameters
+// PARAMETERS
+// intercepts
 PARAMETER(alpha_0);             // global intercept
 //PARAMETER_VECTOR(alpha_m);	// month-specific intercept
 //PARAMETER_VECTOR(alpha_s);	// state-specific intercept
 //PARAMETER_MATRIX(alpha_ms);	// month-state spatially correlated intercept
 
+// slopes
 PARAMETER(beta_0);		// global slope
 //PARAMETER_VECTOR(beta_m);	// month-specific slope
 //PARAMETER_VECTOR(beta_s);	// state-specific slope
 //PARAMETER_MATRIX(beta_ms);	// month-state spatially correlated slope
 
+// precisions
 PARAMETER(prec_rw);      	// precision of rw1 
 PARAMETER(prec_epsilon);        // precision of observations
 
+// estimated output
 PARAMETER(log_counts_pred);	// estimated count
 
 // initialise negative log-likelihood
