@@ -28,18 +28,18 @@ rw1 <- replicate(N,generate.rw1(prec_rw1))
 t <- rep(seq(1:T),N)
 
 # compute mu values
-real_mu <- exp(alpha_0 + beta_0 * t  + rw1)
+real_lambda <- exp(alpha_0 + beta_0 * t  + rw1)
 
-y <- rpois(n=T*N, lambda=real_mu)
+y <- rpois(n=T*N, lambda=real_lambda)
 
-dat <- data.frame(t=t,mu=y)
+dat <- data.frame(t=t,y=y)
 
 # fit using glm
-# glm.fit <- glm(dat$mu ~ 1+t, family='poisson'(link = "log"))
+# glm.fit <- glm(dat$y ~ 1+t, family='poisson'(link = "log"))
 
 # fit using INLA
 t2 <- t
-fml <- mu ~ 1 + t + f(t2,model='rw1')
+fml <- y ~ 1 + t + f(t2,model='rw1')
 inla.fit <- inla(fml,family='poisson',data=dat)
 
 # create matrix with data
