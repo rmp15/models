@@ -11,17 +11,18 @@ library(TMB)
 T <- 10000
 N <- 1
 
-# coefficients
+# parameters
 alpha_0 <- 10
 beta_0 <- -0.01
+prec_rw1 <- 150000
 
 # generate random walk
-generate.rw1 <- function(prec_rw1) {
-dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec_rw1)))))
+generate.rw1 <- function(prec) {
+dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec)))))
 return(dummy)
 }
 
-rw1 <- replicate(N,generate.rw1(15000)) 
+rw1 <- replicate(N,generate.rw1(prec_rw1)) 
 
 # generate covariate values
 t <- rep(seq(1:T),N)
