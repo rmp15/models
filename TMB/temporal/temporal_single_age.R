@@ -8,11 +8,11 @@ library(TMB)
 # create a dataset from specified model
 
 # series length (t) and number of different series (n)
-T <- 10000
+T <- 1000
 N <- 1
 
 # coefficients
-alpha_0 <- 100
+alpha_0 <- 10
 beta_0 <- -0.01
 
 # generate random walk
