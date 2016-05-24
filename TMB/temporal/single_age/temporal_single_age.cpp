@@ -35,7 +35,7 @@ PARAMETER(beta_0);		// global slope
 PARAMETER(prec_rw);      	// precision of rw1 
 PARAMETER(prec_epsilon);        // precision of observations
 
-// estimated output
+// ESTIMATED OUTPUT
 PARAMETER(log_counts_pred);	// estimated count
 
 // initialise negative log-likelihood
