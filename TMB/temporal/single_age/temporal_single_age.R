@@ -42,13 +42,19 @@ fml <- counts ~ 1 + t + f(t2,model='rw1')
 inla.fit <- inla(fml,family='poisson',data=dat)
 
 # create matrix with data
-log_counts <- matrix(log(dat$counts),T,N)
+log_counts <- matrix(log(dat$counts),N,T)
 
 # compile cpp file
 compile('temporal_single_age.cpp')
 dyn.load(dynlib('temporal_single_age'))
 
+# prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(alpha_0=0,beta_0=0,log_tau_rw=-1,log_tau_epsilon=-1)
+parameters <- list(alpha_0=10,beta_0=1,log_tau_rw=0,log_tau_epsilon=0,log_counts_pred=matrix(0,N,T))
 
-obj <- MakeADFun(data, parameters,random='log_counts_pred', DLL='temporal_single_age')
+# run TMB model on simulated data
+obj <- MakeADFun(data, parameters, DLL='temporal_single_age')
+obj$hessian <- FALSE
+opt <- do.call("optim", obj)
+sd <- sdreport(obj)
+
