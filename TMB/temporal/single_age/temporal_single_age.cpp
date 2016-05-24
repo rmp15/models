@@ -32,14 +32,18 @@ PARAMETER(beta_0);		// global slope
 //PARAMETER_MATRIX(beta_ms);	// month-state spatially correlated slope
 
 // precisions
-PARAMETER(prec_rw);      	// precision of rw1 
-PARAMETER(prec_epsilon);        // precision of observations
+PARAMETER(log_tau_rw);      	// log precision of rw1 
+PARAMETER(log_tau_epsilon);     // log precision of observations
 
 // ESTIMATED OUTPUT
 PARAMETER(log_counts_pred);	// estimated count
 
-// initialise negative log-likelihood
+// INITIALISED NEGATIVE LOG-LIKELIHOOD
 Type nll = Type(0.0);
+
+// TRANSFORM PRECISIONS
+Type log_sigma_rw 	= (Type(-1) * log_tau_rw) 	/ Type(2)
+Type log_sigma_epsilon 	= (Type(-1) * log_epsilon_rw) 	/ Type(2)
    	
 // random walk
 matrix<Type> pi(N,T);
