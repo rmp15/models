@@ -21,7 +21,7 @@ dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec_rw1)))))
 return(dummy)
 }
 
-rw1 <- replicate(N,generate.rw1(-3)) 
+rw1 <- replicate(N,generate.rw1(15000)) 
 
 # generate covariate values
 t <- rep(seq(1:T),N)
