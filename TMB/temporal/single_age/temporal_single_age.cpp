@@ -13,7 +13,8 @@ Type objective_function<Type>::operator() ()
 //			(pi_t)s + epsilon_st
   
 // data
-DATA_MATRIX(log_counts);        // matrix of log of counts for single age group in multiple states, with time across and states downwards
+DATA_MATRIX(log_counts);        // matrix of log of counts for single age group in multiple states, 
+				// with time across and states downwards
 size_t T= log_mu.cols();	// number of time points
 size_t N = log_mu.rows();	// number of states
   
