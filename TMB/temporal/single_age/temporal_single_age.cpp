@@ -45,37 +45,38 @@ Type nll = Type(0.0);
 Type log_sigma_rw 	= (Type(-1) * log_tau_rw) 	/ Type(2)
 Type log_sigma_epsilon 	= (Type(-1) * log_epsilon_rw) 	/ Type(2)
    	
-// random walk
+// RANDOM WALK
 matrix<Type> pi(N,T);
-for (size_t n = 0; n < N; n++) {
+for (size_t n = 1; n < N; n++) {
 	for (size_t t = 0; t < T; t++) {
-		if (t==0) {
-			pi(n,t) =  Type(0.);
-		}
-		else {
-			nll -= dnorm(pi(n,t), pi(n,t-1), exp(log_sigma_rw), TRUE);
-		}
+	//	if (t==0) {
+	//		pi(n,t) =  Type(0.);
+	//	}
+	//	else {
+	//		nll -= dnorm(pi(n,t), pi(n,t-1), exp(log_sigma_rw), TRUE);
+	//	}
+		nll -= dnorm(pi(n,t), pi(n,t-1), exp(log_sigma_rw), TRUE);
 	}
 }
 
-// process model:
-for(int i = 1; i < n; i++){
-    Type m = a*u[i-1] ;    //linear model
-  nll -= dnorm(u[i], m, sigma_proc, true); //likelihood for random effects
-}
+// (RANDOM WALK EXAMPLE)
+//for(int i = 1; i < n; i++){
+//    Type m = a*u[i-1] ;    //linear model
+//  nll -= dnorm(u[i], m, sigma_proc, true); //likelihood for random effects
+//}
 
-// prediction
-matrix<Type> log_mu_pred(N,T);
+// PREDICTION
+matrix<Type> log_counts_pred(N,T);
 for (size_t t=0; t < T; t++) {
 	for (size_t n=0; n < N; n++) {
-		nll -= dnorm(log_mu_pred(n,t), alpha_0 + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
+		nll -= dnorm(log_counts_pred(n,t), alpha_0 + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
 	}
 }
 
 // data likelihood
 for (size_t t=0; t < T; t++) {
 	for (size_t n=0; n < N; n++) {
-		nll -= dpois(log_mu(n,t), log_mu_pred(n,t), TRUE);
+		nll -= dpois(log_counts(n,t), log_counts_pred(n,t), TRUE);
 	}
 }
 
