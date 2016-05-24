@@ -50,13 +50,14 @@ dyn.load(dynlib('temporal_single_age'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(alpha_0=10,beta_0=-0.02,log_tau_rw=-1,log_tau_epsilon=-1,log_counts_pred=matrix(0,N,T))
+parameters <- list(alpha_0=0,beta_0=-0,log_tau_rw=1,log_tau_epsilon=1,log_counts_pred=matrix(1,N,T))
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, DLL='temporal_single_age')
-obj$hessian <- TRUE
+obj$hessian <- FALSE
 opt <- do.call("optim", obj)
 sd <- sdreport(obj)
 
 # extract fixed effects
 fixed <- summary(sd, 'fixed')
+

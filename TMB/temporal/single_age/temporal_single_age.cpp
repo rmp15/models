@@ -59,14 +59,7 @@ for (size_t n = 1; n < N; n++) {
         }
 }
 
-// (RANDOM WALK EXAMPLE)
-//for(int i = 1; i < n; i++){
-//    Type m = a*u[i-1] ;    //linear model
-//  nll -= dnorm(u[i], m, sigma_proc, true); //likelihood for random effects
-//}
-
 // PREDICTION
-//matrix<Type> log_counts_pred(N,T);
 for (size_t t=0; t < T; t++) {
         for (size_t n=0; n < N; n++) {
                 nll -= dnorm(log_counts_pred(n,t), alpha_0 + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
@@ -76,6 +69,7 @@ for (size_t t=0; t < T; t++) {
 // data likelihood
 for (size_t t=0; t < T; t++) {
         for (size_t n=0; n < N; n++) {
+		log_counts_pred(n,t) = alpha_0 + beta_0 * t + pi(n,t);
                 nll -= dpois(log_counts(n,t), log_counts_pred(n,t), TRUE);
         }
 }
