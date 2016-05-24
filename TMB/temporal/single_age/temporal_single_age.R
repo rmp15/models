@@ -44,3 +44,5 @@ inla.fit <- inla(fml,family='poisson',data=dat)
 # create matrix with data
 log_counts <- matrix(log(dat$counts),T,N)
 
+# compile cpp file
+compile('temporal_single_age.cpp')
