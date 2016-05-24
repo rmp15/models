@@ -6,7 +6,7 @@ library(TMB)
 # create a dataset from specified model
 
 # series length (t) and number of different series (n)
-T <- 10000
+T <- 100
 N <- 1
 
 # coefficients
