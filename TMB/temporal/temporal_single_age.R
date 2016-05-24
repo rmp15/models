@@ -12,7 +12,7 @@ T <- 10000
 N <- 1
 
 # coefficients
-alpha_0 <- 10
+alpha_0 <- 100
 beta_0 <- -0.01
 
 # generate random walk
