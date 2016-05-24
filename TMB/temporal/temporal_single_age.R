@@ -8,12 +8,12 @@ library(TMB)
 # create a dataset from specified model
 
 # series length (t) and number of different series (n)
-T <- 1000
+T <- 10000
 N <- 1
 
 # coefficients
 alpha_0 <- 10
-beta_0 <- -0.02
+beta_0 <- -0.01
 
 # generate random walk
 generate.rw1 <- function(prec_rw1) {
