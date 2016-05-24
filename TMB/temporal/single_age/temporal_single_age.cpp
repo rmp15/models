@@ -28,10 +28,10 @@ PARAMETER(beta_0);		// global slope
 //PARAMETER_VECTOR(beta_s);	// state-specific slope
 //PARAMETER_MATRIX(beta_ms);	// month-state spatially correlated slope
 
-PARAMETER(log_sigma_rw);      	// log(rw variance) 
-PARAMETER(log_sigma_epsilon);   // log(obs variance)
+PARAMETER(prec_rw);      	// precision of rw1 
+PARAMETER(prec_epsilon);        // precision of observations
 
-PARAMETER(log_mu_pred);		// estimated rate
+PARAMETER(log_counts_pred);	// estimated count
 
 // initialise negative log-likelihood
 Type nll = Type(0.0);
