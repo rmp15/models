@@ -46,3 +46,9 @@ log_counts <- matrix(log(dat$counts),T,N)
 
 # compile cpp file
 compile('temporal_single_age.cpp')
+dyn.load(dynlib('temporal_single_age'))
+
+data <- list(log_counts = log_counts)
+parameters <- list(alpha_0=0,beta_0=0,log_tau_rw=-1,log_tau_epsilon=-1)
+
+obj <- MakeADFun(data, parameters,random='log_counts_pred', DLL='temporal_single_age')
