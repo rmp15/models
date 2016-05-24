@@ -58,6 +58,12 @@ for (size_t n = 0; n < N; n++) {
 	}
 }
 
+// process model:
+for(int i = 1; i < n; i++){
+    Type m = a*u[i-1] ;    //linear model
+  nll -= dnorm(u[i], m, sigma_proc, true); //likelihood for random effects
+}
+
 // prediction
 matrix<Type> log_mu_pred(N,T);
 for (size_t t=0; t < T; t++) {
