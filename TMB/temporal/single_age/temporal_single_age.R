@@ -29,18 +29,18 @@ t <- rep(seq(1:T),N)
 # compute mu values
 real_lambda <- exp(alpha_0 + beta_0 * t  + rw1)
 
-y <- rpois(n=T*N, lambda=real_lambda)
+counts <- rpois(n=T*N, lambda=real_lambda)
 
-dat <- data.frame(t=t,y=y)
+dat <- data.frame(t=t,counts=counts)
 
 # fit using glm
 # glm.fit <- glm(dat$y ~ 1+t, family='poisson'(link = "log"))
 
 # fit using INLA
 t2 <- t
-fml <- y ~ 1 + t + f(t2,model='rw1')
+fml <- counts ~ 1 + t + f(t2,model='rw1')
 inla.fit <- inla(fml,family='poisson',data=dat)
 
 # create matrix with data
-log_y <- matrix(log(dat$y),T,N)
+log_counts <- matrix(log(dat$counts),T,N)
 
