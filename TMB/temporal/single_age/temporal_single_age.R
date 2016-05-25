@@ -2,7 +2,7 @@ library(TMB)
 
 # series length (t) and number of different series (n)
 T <- 500
-N <- 2
+N <- 1
 
 # parameters
 alpha_0 <- 10
