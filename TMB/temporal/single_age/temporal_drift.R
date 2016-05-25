@@ -27,7 +27,7 @@ dyn.load(dynlib('temporal_drift'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(alpha,=1.,beta_0=1.,log_counts_pred=matrix(1.,N,T))
+parameters <- list(alpha_0=1.,beta_0=1.,log_counts_pred=matrix(1.,N,T))
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, DLL='temporal_drift')
