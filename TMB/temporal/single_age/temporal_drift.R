@@ -12,9 +12,8 @@ beta_0 <- -0.01
 t <- rep(seq(1:T),N)
 
 # compute mu values
-#real_lambda <- exp(alpha_0 + beta_0 * t)
-counts <- exp(alpha_0 + beta_0 * t)
-#counts <- rpois(n=T*N, lambda=real_lambda)
+real_lambda <- exp(alpha_0 + beta_0 * t)
+counts <- rpois(n=T*N, lambda=real_lambda)
 
 dat <- data.frame(t=t,counts=counts)
 
