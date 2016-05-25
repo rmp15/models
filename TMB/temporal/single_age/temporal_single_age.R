@@ -1,7 +1,5 @@
 library(TMB)
 
-# create a dataset from specified model
-
 # series length (t) and number of different series (n)
 T <- 500
 N <- 1
