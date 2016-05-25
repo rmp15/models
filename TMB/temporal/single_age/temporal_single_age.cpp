@@ -38,15 +38,15 @@ for (size_t n = 0; n < N; n++) {
 }
 
 // PREDICTION
-for (size_t t=0; t < T; t++) {
-        for (size_t n=0; n < N; n++) {
+for (size_t n=0; n < N; n++) {
+        for (size_t t=0; t < T; t++) {
                 nll -= dnorm(log_counts_pred(n,t), beta_0 * (t + 1) + pi(n,t), exp(log_sigma_epsilon), TRUE);
         }
 }
 
 // data likelihood
-for (size_t t=0; t < T; t++) {
-        for (size_t n=0; n < N; n++) {
+for (size_t n=0; n < N; n++) {
+        for (size_t t=0; t < T; t++) {
                 nll -= dpois(log_counts(n,t), log_counts_pred(n,t), TRUE);
         }
 }
