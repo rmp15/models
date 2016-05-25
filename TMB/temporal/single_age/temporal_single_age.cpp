@@ -13,11 +13,12 @@ size_t T = log_counts.cols();   // number of time points
 size_t N = log_counts.rows();   // number of states
 
 // PARAMETERS
-// intercepts
+// slopes
 PARAMETER(beta_0);              // global slope
 
+// precisions
 PARAMETER(log_tau_rw);          // log precision of rw1 
-PARAMETER(log_tau_epsilon);     // log precision of observations
+PARAMETER(log_tau_epsilon);     // log precision of overdispersion
 
 // ESTIMATED OUTPUT
 PARAMETER_MATRIX(log_counts_pred);      // estimated count
