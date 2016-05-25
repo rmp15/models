@@ -57,3 +57,11 @@ library(INLA)
 t3 <- t2 <- t
 fml <- counts ~ 1 + t + f(t2,model='rw1') + f(t3, model = "iid")
 inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 1))
+
+# plot results compared with original data
+library(ggplot2)
+plot.inla <- inla.fit$summary.fitted.values
+plot.inla$id <- seq(1:nrow(plot.dat))
+p <-  ggplot() + 
+      geom_line(data=plot.inla, aes(x=id, y=mean)) + 
+      geom_ribbon(data=plot.inla,aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`)))
