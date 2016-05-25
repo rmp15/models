@@ -1,6 +1,6 @@
 library(TMB)
 
-# series length (t) and number of different series (n)
+# series length (T) and number of different series (N)
 T <- 100
 N <- 1
 
