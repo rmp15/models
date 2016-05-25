@@ -1,7 +1,7 @@
 library(TMB)
 
 # series length (t) and number of different series (n)
-T <- 500
+T <- 100
 N <- 1
 
 # parameters
