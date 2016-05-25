@@ -7,6 +7,7 @@ Type objective_function<Type>::operator() ()
 {
 
 // SIMULATED DATA FOR POISSON REGRESSION
+// X ~ Po(deaths)
 // log deaths = alpha_0 + beta_0 * t + pi_t + overdispersion
 
 // DATA
