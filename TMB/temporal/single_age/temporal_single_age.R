@@ -61,7 +61,7 @@ inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 
 # plot results compared with original data
 library(ggplot2)
 plot.inla <- inla.fit$summary.fitted.values
-plot.inla$id <- seq(1:nrow(plot.dat))
+plot.inla$id <- seq(1:nrow(plot.inla))
 p <-  ggplot() + 
       geom_line(data=plot.inla, aes(x=id, y=mean)) + 
       geom_ribbon(data=plot.inla,aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`)))
