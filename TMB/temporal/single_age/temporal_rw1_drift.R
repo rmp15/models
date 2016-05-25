@@ -35,8 +35,8 @@ dat <- data.frame(t=t,counts=counts)
 log_counts <- matrix(log(dat$counts),N,T)
 
 # compile cpp file
-compile('model.cpp')
-dyn.load(dynlib('model'))
+compile('temporal_rw1_drift.cpp')
+dyn.load(dynlib('temporal_rw1_drift'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
