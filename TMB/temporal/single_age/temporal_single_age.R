@@ -17,13 +17,15 @@ dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec)))))
 return(dummy)
 }
 
+# generate random walk and overdispersion
 rw1 <- replicate(N,generate.rw1(prec_rw1)) 
+od  <- rnorm(T, mean = 0, sd = sqrt(1 / prec_e))
 
 # generate covariate values
 t <- rep(seq(1:T),N)
 
 # compute mu values
-real_lambda <- exp(alpha_0 + beta_0 * t  + rw1 + rnorm(T, mean = 0, sd = sqrt(1 / prec_e)))
+real_lambda <- exp(alpha_0 + beta_0 * t  + rw1 + od)
 
 counts <- rpois(n=T*N, lambda=real_lambda)
 
