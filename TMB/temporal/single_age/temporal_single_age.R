@@ -12,7 +12,7 @@ prec_e <- 300
 
 # generate random walk
 generate.rw1 <- function(prec) {
-set.seed(123)
+#set.seed(123)
 dummy <-c(0,cumsum(rnorm(n=T-1, mean=0,sd=1/sqrt((prec)))))
 return(dummy)
 }
