@@ -43,7 +43,6 @@ data <- list(log_counts = log_counts)
 parameters <- list(beta_0=1.,log_tau_rw=4.,log_tau_epsilon=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) )
 
 # run TMB model on simulated data
-#obj <- MakeADFun(data, parameters, random = "pi", DLL='model')
 obj <- MakeADFun(data, parameters, random = "pi", DLL='model')
 obj$hessian <- FALSE
 opt <- do.call("optim", obj)
@@ -62,6 +61,7 @@ inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 
 library(ggplot2)
 plot.inla <- inla.fit$summary.fitted.values
 plot.inla$id <- seq(1:nrow(plot.inla))
-p <-  ggplot() + 
-      geom_line(data=plot.inla, aes(x=id, y=mean)) + 
-      geom_ribbon(data=plot.inla,aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`)))
+p <-  ggplot() +
+      geom_line(data=dat,colour='blue',aes(x=t,y=counts)) + 
+      geom_line(data=plot.inla,colour='red',aes(x=id, y=mean)) + 
+      geom_ribbon(data=plot.inla,alpha=0.5,aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`)))
