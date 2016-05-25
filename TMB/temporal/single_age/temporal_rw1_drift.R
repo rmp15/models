@@ -43,7 +43,7 @@ data <- list(log_counts = log_counts)
 parameters <- list(beta_0=1.,log_tau_rw=4.,log_tau_epsilon=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) )
 
 # run TMB model on simulated data
-obj <- MakeADFun(data, parameters, random = "pi", DLL='model')
+obj <- MakeADFun(data, parameters, random = "pi", DLL='temporal_rw1_drift')
 obj$hessian <- FALSE
 opt <- do.call("optim", obj)
 sd <- sdreport(obj)
