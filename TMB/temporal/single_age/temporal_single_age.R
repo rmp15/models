@@ -56,4 +56,4 @@ fixed <- summary(sd, 'fixed')
 library(INLA)
 t3 <- t2 <- t
 fml <- counts ~ 1 + t + f(t2,model='rw1') + f(t3, model = "iid")
-inla.fit <- inla(fml,family='poisson',data=dat)
+inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 1))
