@@ -6,6 +6,9 @@ template<class Type>
 Type objective_function<Type>::operator() ()
 {
 
+// SIMULATED DATA FOR POISSON REGRESSION
+// log deaths = alpha_0 + beta_0 * t + pi_t + overdispersion
+
 // DATA
 DATA_MATRIX(log_counts);        // matrix of log of counts for single age group in multiple states, 
                                 // with time across and states downwards
@@ -13,6 +16,8 @@ size_t T = log_counts.cols();   // number of time points
 size_t N = log_counts.rows();   // number of states
 
 // PARAMETERS
+// intercepts
+// PARAMETER(alpha_0);          //implicit in random walk
 // slopes
 PARAMETER(beta_0);              // global slope
 
