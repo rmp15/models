@@ -40,13 +40,13 @@ dyn.load(dynlib('temporal_rw1_drift'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(beta_0=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T))#,log_prec_rw=1.,log_prec_epsilon=1., )
+parameters <- list(beta_0=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) )#,log_prec_rw=1.,log_prec_epsilon=1., )
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, random = 'pi', DLL='temporal_rw1_drift')
 obj$hessian <- FALSE
-opt <- do.call('optim', obj)
-sd <- sdreport(obj)
+system.time(opt <- do.call('optim', obj))
+system.time(sd <- sdreport(obj))
 
 # function to extract desired variable
 extract.variable <- function(sd, var, type) {
@@ -70,7 +70,7 @@ rw1.pred <- extract.variable(sd,'pi', 'random')
 library(INLA)
 t3 <- t2 <- t
 fml <- counts ~ 1 + t + f(t2,model='rw1') + f(t3, model = 'iid')
-inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 1))
+system.time(inla.fit <- inla(fml,family='poisson',data=dat, control.predictor = list(link = 1)))
 
 plot.inla <- inla.fit$summary.fitted.values
 plot.inla$id <- seq(1:nrow(plot.inla))
@@ -82,5 +82,6 @@ p <-    ggplot() +
         geom_line(data=dat,colour='blue',aes(x=t,y=counts)) +
         geom_line(data=plot.inla,colour='red',aes(x=id, y=mean)) +
         geom_line(data=log_counts.pred,colour='green',aes(x=id,y=exp(estimate))) +
+        geom_ribbon(data=log_counts.pred,alpha=0.3,aes(x=id,ymax=exp(estimate+1.6449*std.error),ymin=exp(estimate-1.6449*std.error))) +
         geom_ribbon(data=plot.inla,alpha=0.5,aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`)))
 
