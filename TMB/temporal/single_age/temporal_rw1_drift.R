@@ -40,13 +40,13 @@ dyn.load(dynlib('temporal_rw1_drift'))
 
 # prepare list of parameters for TMB
 data <- list(log_counts = log_counts)
-parameters <- list(beta_0=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) )#,log_prec_rw=1.,log_prec_epsilon=1., )
+parameters <- list(beta_0=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) ,log_prec_rw=1.,log_prec_epsilon=1.)
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, random = 'pi', DLL='temporal_rw1_drift')
 obj$hessian <- FALSE
 system.time(opt <- do.call('optim', obj))
-system.time(sd <- sdreport(obj))
+system.time(sd <- sdreport(obj,getJointPrecision = TRUE))
 
 # function to extract desired variable
 extract.variable <- function(sd, var, type) {
@@ -66,6 +66,9 @@ extract.variable <- function(sd, var, type) {
 log_counts.pred <- extract.variable(sd, 'log_counts_pred', 'fixed')
 rw1.pred <- extract.variable(sd,'pi', 'random')
 rw1.pred$estimate <- rw1.pred$estimate - alpha_0 # accounts for intercept included in rw1
+
+# obtain joint precision matrix
+joint.prec <- sd$jointPrecision
 
 # compare results with INLA
 library(INLA)
