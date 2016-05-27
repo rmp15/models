@@ -38,10 +38,10 @@ nll -= dlgamma(log_prec_rw, Type(1), Type(1000), TRUE);
 nll -= dlgamma(log_prec_epsilon, Type(1), Type(1000), TRUE);
 
 // TRANSFORM PRECISIONS
-//Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
-//Type log_sigma_epsilon  = (Type(-1) * log_prec_epsilon)  / Type(2) ;
-Type log_sigma_rw = (Type(-1) * log(Type(100)))  / Type(2) ;
-Type log_sigma_epsilon  = (Type(-1) * log(Type(300)))  / Type(2) ;
+Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
+Type log_sigma_epsilon  = (Type(-1) * log_prec_epsilon)  / Type(2) ;
+//Type log_sigma_rw = (Type(-1) * log(Type(100)))  / Type(2) ;
+//Type log_sigma_epsilon  = (Type(-1) * log(Type(300)))  / Type(2) ;
 
    	
 // RANDOM WALK
