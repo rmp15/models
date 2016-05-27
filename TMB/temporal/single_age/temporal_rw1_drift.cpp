@@ -61,7 +61,7 @@ for (size_t n=0; n < N; n++) {
 // data likelihood
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                nll -= dpois(log_counts(n,t), log_counts_pred(n,t), TRUE);
+                nll -= dpois(exp(log_counts(n,t)), exp(log_counts_pred(n,t)), TRUE);
         }
 }
 
