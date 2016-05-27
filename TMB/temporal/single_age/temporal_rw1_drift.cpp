@@ -34,8 +34,8 @@ PARAMETER_MATRIX(pi);
 Type nll = Type(0.0);
     
 // ASSIGN HYPERPRIORS TO PRECISIONS
-nll -= dlgamma(log_prec_rw, Type(1), Type(1000), TRUE);
-nll -= dlgamma(log_prec_epsilon, Type(1), Type(1000), TRUE);
+nll -= dlgamma(log_prec_rw, Type(1), Type(500000), TRUE);
+nll -= dlgamma(log_prec_epsilon, Type(1), Type(500000), TRUE);
 
 // TRANSFORM PRECISIONS
 Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
