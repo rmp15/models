@@ -1,4 +1,4 @@
-st=ls())
+rm(list=ls())
 
 # arguments from Rscript
 args <- commandArgs(trailingOnly=TRUE)
