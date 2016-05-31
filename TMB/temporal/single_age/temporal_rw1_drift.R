@@ -1,12 +1,12 @@
 library(TMB)
 
 # series length (T) and number of different series (N)
-T <- 1000
+T <- 10000
 N <- 1
 
 # parameters
-alpha_0 <- 10
-beta_0 <- -0.01
+alpha_0 <- 15
+beta_0 <- -0.001
 prec_rw1 <- 100
 prec_e <- 300
 
