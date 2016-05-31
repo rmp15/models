@@ -11,10 +11,10 @@ Type objective_function<Type>::operator() ()
 // log deaths = alpha_0 + beta_0 * t + pi_t + overdispersion
 
 // DATA
-DATA_MATRIX(log_counts);        // matrix of log of counts for single age group in multiple states, 
+DATA_MATRIX(counts);            // matrix of counts for single age group in multiple states, 
                                 // with time across and states downwards
-size_t T = log_counts.cols();   // number of time points
-size_t N = log_counts.rows();   // number of states
+size_t T = counts.cols();   // number of time points
+size_t N = counts.rows();   // number of states
 
 // PARAMETERS
 // intercepts
@@ -27,7 +27,7 @@ PARAMETER(log_prec_rw);          // log precision of rw1
 PARAMETER(log_prec_epsilon);     // log precision of overdispersion
 
 // ESTIMATED OUTPUT
-PARAMETER_MATRIX(log_counts_pred);      // estimated count
+PARAMETER_MATRIX(counts_pred);   // estimated count
 PARAMETER_MATRIX(pi); 
 
 // INITIALISED NEGATIVE LOG-LIKELIHOOD
@@ -54,14 +54,14 @@ for (size_t n = 0; n < N; n++) {
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                nll -= dnorm(log_counts_pred(n,t), beta_0 * (t + 1) + pi(n,t), exp(log_sigma_epsilon), TRUE);
+                nll -= dnorm(counts_pred(n,t), exp(beta_0 * (t + 1) + pi(n,t)), exp(log_sigma_epsilon), TRUE);
         }
 }
 
 // data likelihood
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                nll -= dpois(exp(log_counts(n,t)), exp(log_counts_pred(n,t)), TRUE);
+                nll -= dpois(counts(n,t), counts_pred(n,t), TRUE);
         }
 }
 
