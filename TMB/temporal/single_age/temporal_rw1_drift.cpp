@@ -28,7 +28,7 @@ PARAMETER(log_prec_epsilon);     // log precision of overdispersion
 
 // ESTIMATED OUTPUT
 PARAMETER_MATRIX(counts_pred);   // estimated count
-PARAMETER_MATRIX(pi); 
+PARAMETER_MATRIX(pi);
 
 // INITIALISED NEGATIVE LOG-LIKELIHOOD
 Type nll = Type(0.0);
@@ -54,7 +54,7 @@ for (size_t n = 0; n < N; n++) {
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                nll -= dnorm(counts_pred(n,t), exp(beta_0 * (t + 1) + pi(n,t)), exp(log_sigma_epsilon), TRUE);
+                nll -= dnorm(log(counts_pred(n,t)), exp(beta_0 * (t + 1) + pi(n,t)), exp(log_sigma_epsilon), TRUE);
         }
 }
 
