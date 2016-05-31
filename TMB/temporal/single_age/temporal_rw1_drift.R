@@ -1,7 +1,7 @@
 library(TMB)
 
 # series length (T) and number of different series (N)
-T <- 500
+T <- 1000
 N <- 1
 
 # parameters
@@ -32,15 +32,15 @@ counts <- rpois(n=T*N, lambda=real_lambda)
 dat <- data.frame(t=t,counts=counts)
 
 # create matrix with data
-log_counts <- matrix(log(dat$counts),N,T)
+counts <- matrix(log(dat$counts),N,T)
 
 # compile cpp file
 compile('temporal_rw1_drift.cpp')
 dyn.load(dynlib('temporal_rw1_drift'))
 
 # prepare list of parameters for TMB
-data <- list(log_counts = log_counts)
-parameters <- list(beta_0=1.,log_counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) ,log_prec_rw=1.,log_prec_epsilon=1.)
+data <- list(counts = counts)
+parameters <- list(beta_0=1.,counts_pred=matrix(1.,N,T), pi=matrix(0.,N,T) ,log_prec_rw=1.,log_prec_epsilon=1.)
 
 # run TMB model on simulated data
 obj <- MakeADFun(data, parameters, random = 'pi', DLL='temporal_rw1_drift')
@@ -63,7 +63,7 @@ extract.variable <- function(sd, var, type) {
 }
 
 # extract predicted values from TMB
-log_counts.pred <- extract.variable(sd, 'log_counts_pred', 'fixed')
+counts.pred <- extract.variable(sd, 'counts_pred', 'fixed')
 rw1.pred <- extract.variable(sd,'pi', 'random')
 rw1.pred$estimate <- rw1.pred$estimate - alpha_0 # accounts for intercept included in rw1
 
@@ -85,8 +85,8 @@ p1 <-   ggplot() +
         geom_line(data=dat,colour='blue',aes(x=t,y=counts)) +
         geom_line(data=plot.inla,colour='red',aes(x=id, y=mean)) +
         geom_ribbon(data=plot.inla,alpha=0.3,fill='red',aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`))) +
-        geom_line(data=log_counts.pred,colour='green',aes(x=id,y=exp(estimate))) +
-        geom_ribbon(data=log_counts.pred,alpha=0.2,fill='green',aes(x=id,ymax=exp(estimate+1.6449*std.error),ymin=exp(estimate-1.6449*std.error))) +
+        geom_line(data=counts.pred,colour='green',aes(x=id,y=exp(estimate))) +
+        geom_ribbon(data=counts.pred,alpha=0.2,fill='green',aes(x=id,ymax=exp(estimate+1.6449*std.error),ymin=exp(estimate-1.6449*std.error))) +
         ggtitle('Fitted values, red=INLA, green=TMB') +
         theme_bw()
 
