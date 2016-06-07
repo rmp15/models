@@ -100,7 +100,7 @@ p2 <-   ggplot() +
         ggtitle('Random Walk: fitted values, red=INLA, green=TMB') +
         theme_bw()
 
-pdf('../output/results.pdf',paper='a4r',height=0,width=0)
+pdf('results.pdf',paper='a4r',height=0,width=0)
 p1
 p2
 dev.off()
