@@ -18,7 +18,7 @@ size_t N = deaths.rows();   	// number of states
 
 // PARAMETERS
 // intercepts
-// PARAMETER(alpha_0);          // implicit in random walk
+//PARAMETER(alpha_0);          // implicit in random walk
 // slopes
 PARAMETER(beta_0);              // global slope
 // rates
@@ -29,12 +29,17 @@ PARAMETER(log_prec_epsilon);    // log precision of overdispersion
 // random walk
 PARAMETER_MATRIX(pi); 
 
+matrix<Type> mu(N, T);
+matrix<Type> dth(N, T);
+Type alpha_0;
+
 // INITIALISE NEGATIVE LOG-LIKELIHOOD
 Type nll = Type(0.0);
     
+
 // ASSIGN HYPERPRIORS TO PRECISIONS
-nll -= dlgamma(log_prec_rw, Type(1), Type(500000), TRUE);
-nll -= dlgamma(log_prec_epsilon, Type(1), Type(500000), TRUE);
+nll -= dlgamma(log_prec_rw, Type(1), Type(1000), TRUE);
+nll -= dlgamma(log_prec_epsilon, Type(1), Type(1000), TRUE);
 
 // TRANSFORM PRECISIONS
 Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
@@ -47,6 +52,9 @@ for (size_t n = 0; n < N; n++) {
         }
 }
 
+alpha_0 = pi.sum() / T;
+
+
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
@@ -54,12 +62,24 @@ for (size_t n=0; n < N; n++) {
         }
 }
 
+// PREDICTION
+for (size_t n=0; n < N; n++) {
+        for (size_t t=0; t < T; t++) {
+                mu(n, t) = exp(log_mu(n, t));
+                dth(n, t) = mu(n, t) * E(n, t);
+        }
+}
+
 // data likelihood
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                nll -= dpois(deaths(n,t), exp(log_mu(n,t)+ log(E(n,t))), TRUE);
+                nll -= dpois(deaths(n,t), dth(n, t), TRUE);
         }
 }
+
+ADREPORT(alpha_0);
+ADREPORT(mu);
+ADREPORT(dth);
 
 return nll;
 }

@@ -2,7 +2,7 @@ library(TMB)
 
 # real data
 dat <- readRDS('../data/datus_state_rates_1982_2010')
-
+dat <- subset(dat, fips == 1 & month == 1)
 # filter for a single age
 age.selected <- 75
 sex.selected <- 1
@@ -46,8 +46,8 @@ extract.variable <- function(sd, var, type) {
 
 # extract predicted values from TMB
 log_mu <- extract.variable(sd, 'log_mu', 'random')
-rw1.pred <- extract.variable(sd,'pi', 'random')
-rw1.pred$estimate <- rw1.pred$estimate - alpha_0 # accounts for intercept included in rw1
+#rw1.pred <- extract.variable(sd,'pi', 'random')
+#rw1.pred$estimate <- rw1.pred$estimate - alpha_0 # accounts for intercept included in rw1
 
 # obtain joint precision matrix
 joint.prec <- sd$jointPrecision
@@ -57,11 +57,23 @@ library(INLA)
 dat$t <- rep(seq(1,T),N)
 dat$t3 <- dat$t2 <- dat$t
 dat$e <- seq(1:nrow(dat))
-fml <- deaths ~ 1 + t + f(t2,model='rw1') + f(e, model = 'iid')
-system.time(inla.fit <- inla(fml,family='poisson',data=dat, E=pop.adj, control.predictor = list(link = 1)))
+fml <- deaths ~ 1 + 
+	f(t, model = "linear", mean.linear = 0, prec.linear = 1e-2) +
+	f(t2,model='rw1',hyper = list(theta = list(prior = "loggamma", param = c(1 , 1e-3))))+ 
+	f(e, model = 'iid',hyper = list(theta = list(prior = "loggamma", param = c(1 , 1e-3))))
+
+system.time(inla.fit <- inla(fml,family='poisson',data=dat, 	
+		control.fixed = list(mean.intercept = 0, prec.intercept = 1e-2),
+		E=pop.adj, control.predictor = list(link = 1)))
 
 plot.inla <- inla.fit$summary.fitted.values
 plot.inla$id <- seq(1:nrow(plot.inla))
+
+tmbres <- summary(sd)[grep("^mu", rownames(summary(sd))), 1]
+inlares <-  inla.fit$summary.fitted.values$`0.5quant`
+plot(tmbres, inlares)
+
+
 
 # plot fitted values from INLA and TMB compared with original data
 library(ggplot2)
@@ -70,7 +82,8 @@ p1 <-   ggplot() +
         geom_line(data=plot.inla,colour='red',aes(x=id, y=mean)) +
         geom_ribbon(data=plot.inla,alpha=0.3,fill='red',aes(x=id,ymax=(`0.975quant`),ymin=(`0.025quant`))) +
         geom_line(data=log_mu,colour='green',aes(x=id,y=exp(estimate))) +
-        geom_ribbon(data=log_counts.pred,alpha=0.2,fill='green',aes(x=id,ymax=exp(estimate+1.6449*std.error),ymin=exp(estimate-1.6449*std.error))) +
+        geom_ribbon(data=log_mu,alpha=0.2,fill='green',
+			aes(x=id,ymax=exp(estimate+1.96*std.error),ymin=exp(estimate-1.96*std.error))) +
         ggtitle('Fitted values, red=INLA, green=TMB') +
         theme_bw()
 
