@@ -104,6 +104,3 @@ pdf('../output/results.pdf',paper='a4r',height=0,width=0)
 p1
 p2
 dev.off()
-
-
-
