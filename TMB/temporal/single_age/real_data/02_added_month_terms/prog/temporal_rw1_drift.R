@@ -16,6 +16,7 @@ M <- length(unique(dat$month))
 # create matrix with data
 deaths <- t(matrix(dat$deaths,T,N))
 E <- t(matrix(dat$pop.adj,T,N))
+M <- as.vector(dat$month)
 
 # compile cpp file
 compile('temporal_rw1_drift.cpp')

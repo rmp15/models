@@ -13,6 +13,8 @@ Type objective_function<Type>::operator() ()
 // DATA
 DATA_MATRIX(deaths);        	// matrix of death counts for single age group in multiple states
 DATA_MATRIX(E);                 // matrix of population for single age group in multiple states
+DATA_VECTOR(M);			// vector of month numbers
+
 size_t T = deaths.cols();   	// number of time points
 size_t N = deaths.rows();   	// number of states
 
@@ -21,13 +23,14 @@ size_t N = deaths.rows();   	// number of states
 PARAMETER_VECTOR(alpha_m);      // month specific intercept
 // slopes
 PARAMETER(beta_0);              // global slope
+PARAMETER_VECTOR(beta_m);       // month specific slope
 // rates
 PARAMETER_MATRIX(log_mu);       // matrix of log(deathrate) for single age groups in multiple states
 // precisions
 PARAMETER(log_prec_rw);         // log precision of rw1
 PARAMETER(log_prec_epsilon);    // log precision of overdispersion
 PARAMETER(log_prec_int_m);      // log precision of month intercepts
-//PARAMETER(log_prec_slp_m);    // log precision of month slopes
+PARAMETER(log_prec_slp_m);    // log precision of month slopes
 // random walk
 PARAMETER_MATRIX(pi); 
 
@@ -43,11 +46,13 @@ Type nll = Type(0.0);
 nll -= dlgamma(log_prec_rw, Type(1), Type(1000), TRUE);
 nll -= dlgamma(log_prec_epsilon, Type(1), Type(1000), TRUE);
 nll -= dlgamma(log_prec_int_m, Type(1), Type(1000), TRUE);
+nll -= dlgamma(log_prec_slp_m, Type(1), Type(1000), TRUE);
 
 // TRANSFORM PRECISIONS
 Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
 Type log_sigma_epsilon  = (Type(-1) * log_prec_epsilon)  / Type(2) ;
 Type log_sigma_int_m 	= (Type(-1) * log_prec_int_m)  	 / Type(2) ;
+Type log_sigma_slp_m 	= (Type(-1) * log_prec_slp_m)  	 / Type(2) ;
    	
 // RANDOM WALK OVER TIME
 for (size_t n = 0; n < N; n++) {
@@ -58,14 +63,14 @@ for (size_t n = 0; n < N; n++) {
 
 // RANDOM WALK FOR MONTH TERMS
 for (size_t m = 0; m < 12; m++) {
-        nll -= dnorm(alpha_m[m], alpha_m[m-1], exp(log_sigma_int_m), TRUE);
-        //nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
+        nll -= dnorm(alpha_m(m), alpha_m(m-1), exp(log_sigma_int_m), TRUE);
+        nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
 }
 
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-                    nll -= dnorm(log_mu(n,t), alpha_m[t%12] + beta_0 * (t + 1) + pi(n,t), exp(log_sigma_epsilon), TRUE);
+        	nll -= dnorm(log_mu(n,t), alpha_m(M(t)) + beta_0 * (t + 1) + pi(n,t), exp(log_sigma_epsilon), TRUE);
         }
 }
 
