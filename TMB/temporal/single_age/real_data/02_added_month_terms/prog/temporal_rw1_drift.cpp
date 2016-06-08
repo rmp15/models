@@ -61,7 +61,7 @@ for (size_t n = 0; n < N; n++) {
 }
 
 // RANDOM WALK FOR MONTH TERMS
-for (size_t m = 1; m < 13; m++) {
+for (size_t m = 1; m < 12; m++) {
         nll -= dnorm(alpha_m(m), alpha_m(m-1), exp(log_sigma_int_m), TRUE);
         //nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
 }
