@@ -13,7 +13,6 @@ Type objective_function<Type>::operator() ()
 // DATA
 DATA_MATRIX(deaths);        	// matrix of death counts for single age group in multiple states
 DATA_MATRIX(E);                 // matrix of population for single age group in multiple states
-DATA_VECTOR(M);			// vector of month numbers
 
 size_t T = deaths.cols();   	// number of time points
 size_t N = deaths.rows();   	// number of states
@@ -62,16 +61,16 @@ for (size_t n = 0; n < N; n++) {
 }
 
 // RANDOM WALK FOR MONTH TERMS
-for (size_t m = 0; m < 12; m++) {
+for (size_t m = 1; m < 13; m++) {
         nll -= dnorm(alpha_m(m), alpha_m(m-1), exp(log_sigma_int_m), TRUE);
-        nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
+        //nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
 }
 
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-        	nll -= dnorm(log_mu(n,t), alpha_m(M(t)) + beta_0 * (t + 1) + pi(n,t), exp(log_sigma_epsilon), TRUE);
-        }
+        	nll -= dnorm(log_mu(n,t), alpha_m(t%12) + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
+	}
 }
 
 // PREDICTION
