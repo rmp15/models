@@ -23,14 +23,14 @@ size_t N = deaths.rows();   	// number of states
 PARAMETER_VECTOR(alpha_m);      // month specific intercept
 // slopes
 PARAMETER(beta_0);              // global slope
-PARAMETER_VECTOR(beta_m);       // month specific slope
+//PARAMETER_VECTOR(beta_m);       // month specific slope
 // rates
 PARAMETER_MATRIX(log_mu);       // matrix of log(deathrate) for single age groups in multiple states
 // precisions
 PARAMETER(log_prec_rw);         // log precision of rw1
 PARAMETER(log_prec_epsilon);    // log precision of overdispersion
 PARAMETER(log_prec_int_m);      // log precision of month intercepts
-PARAMETER(log_prec_slp_m);    // log precision of month slopes
+//PARAMETER(log_prec_slp_m);    // log precision of month slopes
 // random walk
 PARAMETER_MATRIX(pi); 
 
@@ -46,13 +46,13 @@ Type nll = Type(0.0);
 nll -= dlgamma(log_prec_rw, Type(1), Type(1000), TRUE);
 nll -= dlgamma(log_prec_epsilon, Type(1), Type(1000), TRUE);
 nll -= dlgamma(log_prec_int_m, Type(1), Type(1000), TRUE);
-nll -= dlgamma(log_prec_slp_m, Type(1), Type(1000), TRUE);
+//nll -= dlgamma(log_prec_slp_m, Type(1), Type(1000), TRUE);
 
 // TRANSFORM PRECISIONS
 Type log_sigma_rw       = (Type(-1) * log_prec_rw)       / Type(2) ;
 Type log_sigma_epsilon  = (Type(-1) * log_prec_epsilon)  / Type(2) ;
 Type log_sigma_int_m 	= (Type(-1) * log_prec_int_m)  	 / Type(2) ;
-Type log_sigma_slp_m 	= (Type(-1) * log_prec_slp_m)  	 / Type(2) ;
+//Type log_sigma_slp_m 	= (Type(-1) * log_prec_slp_m)  	 / Type(2) ;
    	
 // RANDOM WALK OVER TIME
 for (size_t n = 0; n < N; n++) {
