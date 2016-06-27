@@ -29,7 +29,7 @@ parameters <- list(alpha_m=rep(0.,M),beta_m=rep(0.,M),beta_0=0.,log_mu=matrix(0.
 obj <- MakeADFun(data, parameters, random = c('log_mu','pi'), DLL='temporal_rw1_drift')
 obj$hessian <- FALSE
 system.time(opt <- do.call('optim', obj))
-system.time(sd <- sdreport(obj))#,getJointPrecision = TRUE))
+system.time(sd <- sdreport(obj,getJointPrecision = TRUE))
 
 # function to extract desired variable
 extract.variable <- function(sd, var, type) {

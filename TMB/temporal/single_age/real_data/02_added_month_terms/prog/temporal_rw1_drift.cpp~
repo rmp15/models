@@ -7,6 +7,8 @@ template<class Type>
 Type objective_function<Type>::operator() ()
 {
 
+feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO | FE_UNDERFLOW);
+
 // SIMULATED DATA FOR POISSON REGRESSION
 // X ~ Po(deaths)
 // log deaths = alpha_0 + alpha_m + beta_0 * t + pi_t + overdispersion
