@@ -7,7 +7,7 @@ template<class Type>
 Type objective_function<Type>::operator() ()
 {
 
-//feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO | FE_UNDERFLOW);
+feenableexcept(FE_INVALID | FE_OVERFLOW | FE_DIVBYZERO | FE_UNDERFLOW);
 
 // SIMULATED DATA FOR POISSON REGRESSION
 // X ~ Po(deaths)
@@ -65,14 +65,15 @@ for (size_t n = 0; n < N; n++) {
 
 // RANDOM WALK FOR MONTH TERMS
 for (size_t m = 1; m < 12; m++) {
-        nll -= dnorm(alpha_m(m), alpha_m(m-1), exp(log_sigma_int_m), TRUE);
+        //nll -= dnorm(alpha_m(m), alpha_m(m-1), exp(log_sigma_int_m), TRUE);
         //nll -= dnorm(beta_m(m), beta_m(m-1), exp(log_sigma_slp_m), TRUE);
 }
 
 // PREDICTION
 for (size_t n=0; n < N; n++) {
         for (size_t t=0; t < T; t++) {
-        	nll -= dnorm(log_mu(n,t), alpha_m(t%12) + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
+        	//nll -= dnorm(log_mu(n,t), alpha_m(t%12) + beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
+		nll -= dnorm(log_mu(n,t), beta_0 * t + pi(n,t), exp(log_sigma_epsilon), TRUE);
 	}
 }
 

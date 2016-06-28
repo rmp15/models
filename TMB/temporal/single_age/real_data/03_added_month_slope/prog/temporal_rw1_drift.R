@@ -54,6 +54,9 @@ rw1.pred$estimate <- rw1.pred$estimate - alpha_0 # accounts for intercept includ
 
 # obtain joint precision matrix
 joint.prec <- sd$jointPrecision
+# obtain joint variance covariance matrix
+joint.cov <- solve(joint.prec)
+joint.sd <- sqrt(diag(joint.cov))
 
 # compare results with INLA
 library(INLA)
@@ -107,4 +110,6 @@ p2 <-   ggplot() +
 p1
 p2
 #dev.off()
+
+file.remove("temporal_rw1_drift.o", "temporal_rw1_drift.so")
 

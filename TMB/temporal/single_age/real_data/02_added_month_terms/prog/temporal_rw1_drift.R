@@ -18,6 +18,7 @@ deaths <- t(matrix(dat$deaths,T,N))
 E <- t(matrix(dat$pop.adj,T,N))
 
 # compile cpp file
+file.remove("temporal_rw1_drift.o", "temporal_rw1_drift.so")
 compile('temporal_rw1_drift.cpp')
 dyn.load(dynlib('temporal_rw1_drift'))
 
@@ -105,4 +106,6 @@ p2 <-   ggplot() +
 p1
 p2
 #dev.off()
+
+file.remove("temporal_rw1_drift.o", "temporal_rw1_drift.so")
 

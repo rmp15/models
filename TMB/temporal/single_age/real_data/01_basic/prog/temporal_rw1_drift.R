@@ -104,3 +104,5 @@ pdf('results.pdf',paper='a4r',height=0,width=0)
 p1
 p2
 dev.off()
+
+file.remove("temporal_rw1_drift.o", "temporal_rw1_drift.so")
